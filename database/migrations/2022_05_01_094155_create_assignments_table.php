@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('topic_id');
             $table->string('title');
             $table->string('description');
-            $table->timestamps('start_date');
-            $table->timestamps('deadline');
+            $table->dateTime('start_date');
+            $table->dateTime('deadline');
             $table->timestamps();
         });
     }
