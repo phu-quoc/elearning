@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class AssignmentSubmission extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'assignment_id',
+        'student_id',
+        'status',
+        'point',
+    ];
 }
