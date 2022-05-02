@@ -9,5 +9,18 @@ class Assignment extends Model
 {
     use HasFactory;
 
-    
+    function topic()
+    {
+        return $this->belongsTo(Topic::class);
+    }
+
+    function assignmentFileAttacks()
+    {
+        return $this->hasMany(AssignmentFileAttack::class);
+    }
+
+    function assignmentSubmissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class);
+    }
 }

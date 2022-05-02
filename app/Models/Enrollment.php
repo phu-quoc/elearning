@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Enrollment extends Model
 {
     use HasFactory;
+
+    function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    function schoolYear()
+    {
+        return $this->belongsTo(SchoolYear::class);
+    }
 }

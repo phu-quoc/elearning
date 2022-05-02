@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SchollYear extends Model
+class SchoolYear extends Model
 {
     use HasFactory;
+
+    function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 }

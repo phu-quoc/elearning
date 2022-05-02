@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     use HasFactory;
+
+    function resource()
+    {
+        return $this->belongsTo(Resource::class, 'id');
+    }
 }

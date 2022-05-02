@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Url extends Model
 {
     use HasFactory;
+
+    function resource()
+    {
+        return $this->belongsTo(Resource::class, 'id');
+    }
 }
