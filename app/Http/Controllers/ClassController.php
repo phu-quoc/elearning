@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Class;
+use App\Models\ActivityClass;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -31,10 +31,10 @@ class ClassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Class  $class
+     * @param  \App\Models\ActivityClass  $class
      * @return \Illuminate\Http\Response
      */
-    public function show(Class $class)
+    public function show(ActivityClass $class)
     {
         //
     }
@@ -46,7 +46,7 @@ class ClassController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Class $class)
+    public function update(Request $request, ActivityClass $class)
     {
         //
     }
@@ -57,7 +57,7 @@ class ClassController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Class $class)
+    public function destroy(ActivityClass $class)
     {
         //
     }
