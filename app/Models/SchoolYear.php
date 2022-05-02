@@ -9,6 +9,11 @@ class SchoolYear extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'school_year',
+    ];
+    
     function enrollments()
     {
         return $this->hasMany(Enrollment::class);

@@ -9,6 +9,15 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'topic_id',
+        'title',
+        'description',
+        'start_date',
+        'deadline',
+    ];
+
     function topic()
     {
         return $this->belongsTo(Topic::class);
