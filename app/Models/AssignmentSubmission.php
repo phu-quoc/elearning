@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AssignmentSubmission extends Model
 {
     use HasFactory;
+    
     protected $fillable = [
         'id',
         'assignment_id',
@@ -15,4 +16,19 @@ class AssignmentSubmission extends Model
         'status',
         'point',
     ];
+
+    function assignment()
+    {
+        return $this->belongsTo(Assignment::class);
+    }
+
+    function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    function assignmentSubmissionFileAttacks()
+    {
+        return $this->hasMany(AssignmentSubmissionFileAttack::class);
+    }
 }

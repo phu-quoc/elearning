@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Url extends Model
 {
     use HasFactory;
+    
     protected $fillable = [
         'id',
         'url',
     ];
+
+    function resource()
+    {
+        return $this->belongsTo(Resource::class, 'id');
+    }
 }

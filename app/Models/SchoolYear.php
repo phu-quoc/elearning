@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ActivityClass extends Model
+class SchoolYear extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'id',
-        'name',
-        'department_id',
+        'school_year',
     ];
+    
+    function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 }

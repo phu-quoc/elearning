@@ -8,10 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class FolderFileAttack extends Model
 {
     use HasFactory;
+    
     protected $fillable = [
         'id',
         'resource_id',
         'name',
         'file_attack_path',
     ];
+
+    function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
 }

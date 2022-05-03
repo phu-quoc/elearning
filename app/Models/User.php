@@ -19,14 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'id',
-        'avatar',
         'first_name',
         'last_name',
         'email',
         'phone',
         'user_type',
         'google_id',
-        'password',
         'department_id',
         'image_feature_path',
     ];
@@ -49,4 +47,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    function student()
+    {
+        return $this->hasOne(Student::class, 'id');
+    }
+
+    function lecturer()
+    {
+        return $this->hasOne(Lecturer::class, 'id');
+    }
 }

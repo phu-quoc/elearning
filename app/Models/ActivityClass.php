@@ -5,22 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class ActivityClass extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'id',
         'name',
+        'department_id',
     ];
 
-    function activityClasses()
+    function department()
     {
-        return $this->hasMany(ActivityClass::class);
+        return $this->belongsTo(Department::class);
     }
 
-    function lecturers()
+    function students()
     {
-        return $this->hasMany(Lecturer::class);
+        return $this->hasMany(Student::class);
     }
 }

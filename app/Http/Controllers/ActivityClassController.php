@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityClass;
 use Illuminate\Http\Request;
 
-class ClassController extends Controller
+class ActivityClassController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -54,7 +54,7 @@ class ClassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Class  $class
+     * @param  \App\Models\ActivityClass  $class
      * @return \Illuminate\Http\Response
      */
     public function destroy(ActivityClass $class)
