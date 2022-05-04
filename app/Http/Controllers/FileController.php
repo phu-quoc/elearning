@@ -24,7 +24,7 @@ class FileController extends Controller
     {
         $file = $request->file;
         $file_data=[
-            'name'=> FileController::getFileName($file),
+            'name'=> $file->getClientOriginalName(),
             'file_attack_path'=> FileController::saveFile($file),
         ];
         $file= File::create($file_data);
@@ -69,7 +69,6 @@ class FileController extends Controller
     }
 
     public static function getFileName($file){
-        $extension = $file->extension();
         $uuid = Str::uuid()->toString();
         $fileName= $file->getClientOriginalName();
         $fileName = $uuid."-".$fileName;

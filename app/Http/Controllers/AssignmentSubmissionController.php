@@ -20,7 +20,18 @@ class AssignmentSubmissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $submission_data=[
+            'assignment_id'=> $request->input('assignment_id'),
+            'student_id'=> $request->input('student_id'),
+            'status'=> '0',
+        ];
+        $assignment_submission=  AssignmentSubmission::create($submission_data);
+        $submission_attack_controller= new AssignmentSubmissionFileAttackController(); 
+        $submisson_attack= $submission_attack_controller->store($request, $assignment_submission->id);
+        return response()->json([
+            'assignment_submission' => $assignment_submission,
+            'submission_attack' => $submisson_attack,
+        ]);
     }
 
     /**

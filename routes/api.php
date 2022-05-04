@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/assignment', Controllers\AssignmentController::class);
 Route::resource('/resource', Controllers\ResourceController::class);
+Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class);
 

@@ -18,9 +18,16 @@ class AssignmentSubmissionFileAttackController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $submission_id)
     {
-        //
+        $file = $request->file;
+        $file_attack_path= FileController::saveFile($file);
+        $submission_attack= AssignmentSubmissionFileAttack::create([
+            'assignment_submission_id'=> $submission_id,
+            'name'=> $file->getClientOriginalName(),
+            'file_attack_path'=> $file_attack_path,
+        ]);
+        return $submission_attack;
     }
 
     /**
