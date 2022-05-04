@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\AssignmentFileAttack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AssignmentFileAttackController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,20 +18,21 @@ class AssignmentFileAttackController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request, $assignment_id)
+    {   
+        $file = $request->file;
+        $name= $file->getClientOriginalName();
+        $file_attack_path= FileController::saveFile($file);
+        AssignmentFileAttack::create([
+            'assignment_id'=>  $assignment_id,
+            'name'=> $name,
+            'file_attack_path'=> $file_attack_path,
+        ]);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\AssignmentFileAttack  $assignmentFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function show(AssignmentFileAttack $assignmentFileAttack)
     {
@@ -41,10 +41,6 @@ class AssignmentFileAttackController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AssignmentFileAttack  $assignmentFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AssignmentFileAttack $assignmentFileAttack)
     {
@@ -53,9 +49,6 @@ class AssignmentFileAttackController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AssignmentFileAttack  $assignmentFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function destroy(AssignmentFileAttack $assignmentFileAttack)
     {

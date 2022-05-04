@@ -1,7 +1,12 @@
 <?php
-
+use App\Http\Controllers;
+use App\Http\Controllers\FileController;
+use App\Models\Test;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,8 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test', function() {
-    Storage::disk('google')->put('second test.txt', 'Hello World');
-    dd('Đã upload file lên google drive thành công!');
-
+Route::post('test-save-file', function(Request $request) {
+    $file = $request->file;
+    $path= FileController::saveFile($file);
+    dd($path);
 });
+
+Route::resource('/assignment', Controllers\AssignmentController::class);
