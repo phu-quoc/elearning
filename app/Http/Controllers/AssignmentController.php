@@ -21,14 +21,14 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
-        $assignment=[
+        $assignment_data=[
             'topic_id'=> $request->input('topic_id'),
             'title'=> $request->input('title'),
             'description'=> $request->input('description'),
             'start_date'=> $request->input('start_date'),
             'deadline'=> $request->input('deadline'),
         ];
-        $assignment =Assignment::create($assignment);
+        $assignment =Assignment::create($assignment_data);
         $fileAttack = new AssignmentFileAttackController();
         $fileAttack->store($request, $assignment->id);
     }

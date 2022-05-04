@@ -22,7 +22,13 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $file = $request->file;
+        $file_data=[
+            'name'=> FileController::getFileName($file),
+            'file_attack_path'=> FileController::saveFile($file),
+        ];
+        $file= File::create($file_data);
+        return $file;
     }
 
     /**
@@ -52,9 +58,6 @@ class FileController extends Controller
     //Save file to Google Drive and return its link
     public static function saveFile($file){
         try{
-            // $extension = $file->extension();
-            // $uuid = Str::uuid()->toString();
-            // $fileName = $uuid.'.'.$extension;
             $fileName= FileController::getFileName($file);
             $googleDriveStorage = Storage::disk('google');
             $googleDriveStorage->put($fileName, file_get_contents($file->getRealPath()));

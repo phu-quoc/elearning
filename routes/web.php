@@ -28,4 +28,3 @@ Route::post('test-save-file', function(Request $request) {
     dd($path);
 });
 
-Route::resource('/assignment', Controllers\AssignmentController::class);
