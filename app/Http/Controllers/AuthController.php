@@ -15,11 +15,15 @@ class AuthController extends Controller
         $email= $res->json()['email'];
         $user= User::where('email',$email)->first();
         if(!$user){ //user does not exist, regiser user
+            error_log("0 exist");
             $user= AuthController::register($request,$idToken, $res);
+        } else {
+            error_log("exist");
         }
         Auth::logout();
         Auth::login($user);
         return response()->json([
+            'id'=> $user->id,
             'email' => $user->email,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
