@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function login(Request $request){
-        $idToken = $request->input('idToken');
+        $data= $request->data;
+        $idToken = $data['idToken'];
         $res= Http::get('https://oauth2.googleapis.com/tokeninfo?id_token='.$idToken);
         $email= $res->json()['email'];
         $user= User::where('email',$email)->first();
