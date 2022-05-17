@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers;
 
 /*
@@ -23,4 +24,6 @@ Route::resource('/assignment', Controllers\AssignmentController::class);
 Route::resource('/resource', Controllers\ResourceController::class);
 Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class);
 Route::post('/login', [Controllers\AuthController::class, 'login']);
-
+Route::group(['middleware'=> ['auth:sanctum']], function(){
+    Route::get('/logout', [Controllers\AuthController::class, 'logout']);
+});
