@@ -23,11 +23,10 @@ class AuthController extends Controller
             error_log("exist");
         }
         $tokenResult = $user->createToken('authToken')->plainTextToken;
-        return response()->json(['user'=>$user, "token"=>$tokenResult]);
-
-        return response()->json([
-
-        ]);
+        $userController = new UserController();
+        $user = $userController->getRelation($user);
+        
+        return response()->json(['user' => $user, "token" => $tokenResult]);
     }
 
     public function register(Request $request, $idToken, $res)
@@ -42,7 +41,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->currentAccessToken()->delete();
     }
 }

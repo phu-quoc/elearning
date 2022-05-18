@@ -12,7 +12,7 @@ class ActivityClassController extends Controller
      */
     public function index()
     {
-        //
+        return ActivityClass::all();
     }
 
     /**

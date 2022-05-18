@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,12 @@ Route::post('test-save-file', function(Request $request) {
     $path= FileController::saveFile($file);
     dd($path);
 });
-
+Route::get('/test', function(){
+    $user=User::find(5);
+    $lecturer=$user->lecturer;
+    if($lecturer){
+        $lecturer->department;
+        $lecturer->degree;
+    }
+    return $user;
+});

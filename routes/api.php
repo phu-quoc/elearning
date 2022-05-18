@@ -24,6 +24,14 @@ Route::resource('/assignment', Controllers\AssignmentController::class);
 Route::resource('/resource', Controllers\ResourceController::class);
 Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class);
 Route::post('/login', [Controllers\AuthController::class, 'login']);
-Route::group(['middleware'=> ['auth:sanctum']], function(){
+Route::resource('/class', Controllers\ActivityClassController::class)->only(['index', 'show']);
+Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
+Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
+// Route
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
+    Route::resource('/class', Controllers\ActivityClassController::class)->except(['index', 'show']);
+    Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
+    Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
 });
