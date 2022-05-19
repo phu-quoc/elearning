@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,20 +19,20 @@ class FileController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $file = $request->file;
+        $file_data=[
+            'name'=> $file->getClientOriginalName(),
+            'file_attack_path'=> FileController::saveFile($file),
+        ];
+        $file= File::create($file_data);
+        return $file;
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
      */
     public function show(File $file)
     {
@@ -41,10 +41,6 @@ class FileController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, File $file)
     {
@@ -53,12 +49,29 @@ class FileController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
      */
     public function destroy(File $file)
     {
         //
+    }
+
+    //Save file to Google Drive and return its link
+    public static function saveFile($file){
+        try{
+            $fileName= FileController::getFileName($file);
+            $googleDriveStorage = Storage::disk('google');
+            $googleDriveStorage->put($fileName, file_get_contents($file->getRealPath()));
+            $url = Storage::disk('google')->url($fileName);
+            return $url;
+        }catch(\Exception $e){
+            error_log($e->getMessage());
+        }
+    }
+
+    public static function getFileName($file){
+        $uuid = Str::uuid()->toString();
+        $fileName= $file->getClientOriginalName();
+        $fileName = $uuid."-".$fileName;
+        return $fileName;
     }
 }

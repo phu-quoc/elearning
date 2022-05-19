@@ -9,8 +9,6 @@ class AssignmentSubmissionFileAttackController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,20 +17,21 @@ class AssignmentSubmissionFileAttackController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $submission_id)
     {
-        //
+        $file = $request->file;
+        $file_attack_path= FileController::saveFile($file);
+        $submission_attack= AssignmentSubmissionFileAttack::create([
+            'assignment_submission_id'=> $submission_id,
+            'name'=> $file->getClientOriginalName(),
+            'file_attack_path'=> $file_attack_path,
+        ]);
+        return $submission_attack;
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\AssignmentSubmissionFileAttack  $assignmentSubmissionFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function show(AssignmentSubmissionFileAttack $assignmentSubmissionFileAttack)
     {
@@ -41,10 +40,6 @@ class AssignmentSubmissionFileAttackController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AssignmentSubmissionFileAttack  $assignmentSubmissionFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AssignmentSubmissionFileAttack $assignmentSubmissionFileAttack)
     {
@@ -53,9 +48,6 @@ class AssignmentSubmissionFileAttackController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AssignmentSubmissionFileAttack  $assignmentSubmissionFileAttack
-     * @return \Illuminate\Http\Response
      */
     public function destroy(AssignmentSubmissionFileAttack $assignmentSubmissionFileAttack)
     {

@@ -14,7 +14,8 @@ class ActivityClass extends Model
         'name',
         'department_id',
     ];
-
+    protected $table = 'classes';
+    
     function department()
     {
         return $this->belongsTo(Department::class);

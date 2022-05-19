@@ -1,6 +1,13 @@
 <?php
-
+use App\Http\Controllers;
+use App\Http\Controllers\FileController;
+use App\Models\Test;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +22,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::post('test-save-file', function(Request $request) {
+    $file = $request->file;
+    $path= FileController::saveFile($file);
+    dd($path);
+});
+Route::get('/test', function(){
+    $user=User::find(5);
+    $lecturer=$user->lecturer;
+    if($lecturer){
+        $lecturer->department;
+        $lecturer->degree;
+    }
+    return $user;
 });

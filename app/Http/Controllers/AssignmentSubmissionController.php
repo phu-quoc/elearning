@@ -9,8 +9,6 @@ class AssignmentSubmissionController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,20 +17,25 @@ class AssignmentSubmissionController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $submission_data=[
+            'assignment_id'=> $request->input('assignment_id'),
+            'student_id'=> $request->input('student_id'),
+            'status'=> '0',
+        ];
+        $assignment_submission=  AssignmentSubmission::create($submission_data);
+        $submission_attack_controller= new AssignmentSubmissionFileAttackController(); 
+        $submisson_attack= $submission_attack_controller->store($request, $assignment_submission->id);
+        return response()->json([
+            'assignment_submission' => $assignment_submission,
+            'submission_attack' => $submisson_attack,
+        ]);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\AssignmentSubmission  $assignmentSubmission
-     * @return \Illuminate\Http\Response
      */
     public function show(AssignmentSubmission $assignmentSubmission)
     {
@@ -41,10 +44,6 @@ class AssignmentSubmissionController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AssignmentSubmission  $assignmentSubmission
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AssignmentSubmission $assignmentSubmission)
     {
@@ -53,9 +52,6 @@ class AssignmentSubmissionController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AssignmentSubmission  $assignmentSubmission
-     * @return \Illuminate\Http\Response
      */
     public function destroy(AssignmentSubmission $assignmentSubmission)
     {

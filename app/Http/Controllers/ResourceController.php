@@ -9,30 +9,43 @@ class ResourceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return Resource::all();
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $resource_type = $request->input('resource_type');
+        $resource_data= [
+            'topic_id'=> $request->input('topic_id'),
+            'title'=> $request->input('title'),
+            'description'=> $request->input('description'),
+            'resource_type'=> $resource_type,
+        ];
+        $resource= Resource::create($resource_data);
+        $url=null;
+        $file= null;
+        if($resource_type == '1'){ //type is url
+            $urlController = new UrlController();
+            $url =$urlController->store($request);
+        }else{ //type is file
+            $fileController = new FileController();
+            $file= $fileController->store($request);
+        }
+        return response()->json([
+            'resource'=> $resource,
+            'url'=>$url,
+            'file'=>$file,
+        ]);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Resource  $resource
-     * @return \Illuminate\Http\Response
      */
     public function show(Resource $resource)
     {
@@ -41,10 +54,6 @@ class ResourceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Resource  $resource
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Resource $resource)
     {
@@ -53,9 +62,6 @@ class ResourceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Resource  $resource
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Resource $resource)
     {
