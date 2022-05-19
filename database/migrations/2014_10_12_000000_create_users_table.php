@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('phone')->nullable()->unique();
             $table->tinyInteger('department_id');
             $table->tinyInteger('user_type')->default(1);
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }
