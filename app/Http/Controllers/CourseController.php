@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
@@ -14,7 +15,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::all();
+        return response()->json($courses, 200);
     }
 
     /**
@@ -25,7 +27,18 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        if($user->user_type ==1){ //student can't create new course
+            return response(['message' => 'Forbidden'], 403);
+        }
+        $categoryID= $request->categoryID;
+        $courseName= $request->courseName;
+        $course =Course::create([
+            'name' => $courseName,
+            'category_id'=>$categoryID,
+            'lecturer_id'=> $user->id,
+        ]);
+        return response()->json($course, 200);
     }
 
     /**
