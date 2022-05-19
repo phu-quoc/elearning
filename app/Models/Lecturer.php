@@ -33,6 +33,6 @@ class Lecturer extends Model
 
     function courses()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Course::class);
     }
 }
