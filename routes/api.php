@@ -27,7 +27,7 @@ Route::resource('/class', Controllers\ActivityClassController::class)->only(['in
 Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
 Route::resource("/category", Controllers\CategoryController::class)->only(['index', 'show']);
-Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
+Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['index', 'show']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
