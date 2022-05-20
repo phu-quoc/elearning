@@ -31,9 +31,10 @@ Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['index', '
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
-    Route::get('/user',[AuthController::class, 'user']);
+    Route::get('/user', [AuthController::class, 'user']);
     Route::resource('/class', Controllers\ActivityClassController::class)->except(['index', 'show']);
     Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
     Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
     Route::resource("/course", Controllers\CourseController::class)->only(['store', 'update', 'destroy']);
+    Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['store', 'update', 'destroy']);
 });
