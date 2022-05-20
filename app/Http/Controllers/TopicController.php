@@ -13,7 +13,9 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        $topics= Topic::all();
+        return response()->json($topics, 200);
+
     }
 
     /**

@@ -47,9 +47,16 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        //
+        $course = Course::find($id)->first();
+        $topics = $course->topics;
+        $materials = array();
+        foreach ($topics as $topic) {
+            array_push($materials, $topic->assignments);
+            array_push($materials, $topic->resources);
+        }
+        return response()->json($course);
     }
 
     /**
