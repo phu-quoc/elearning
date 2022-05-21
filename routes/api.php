@@ -26,6 +26,8 @@ Route::post('/login', [Controllers\AuthController::class, 'login']);
 Route::resource('/class', Controllers\ActivityClassController::class)->only(['index', 'show']);
 Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
+Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
+
 // Route
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
