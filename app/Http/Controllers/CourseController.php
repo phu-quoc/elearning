@@ -37,7 +37,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = Course::find($id)->first();
+        $course = Course::find($id);
         $topics = $course->topics;
         $materials = array();
         foreach ($topics as $topic) {
