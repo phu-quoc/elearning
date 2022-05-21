@@ -13,10 +13,25 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::all();
-        return response()->json($courses, 200);
+        $user = $request->user();
+        $userID = $user->id;
+        $userType = $user->user_type;
+        if ($userType == 2) {
+            $courses = Course::where('lecturer_id', $userID)->get();
+            return response()->json($courses, 200);
+        } else {
+            $student = $user->student;
+            $enrollments = $student->enrollments;
+            $courses = array();
+            foreach ($enrollments as $enrollment) {
+                array_push($courses, $enrollment->course);
+            }
+            return response()->json($courses, 200);
+        }
+        // $courses = Course::all();
+        // return response()->json($courses, 200);
     }
 
     /**
@@ -28,15 +43,15 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        if($user->user_type ==1){ //student can't create new course
+        if ($user->user_type == 1) { //student can't create new course
             return response(['message' => 'Forbidden'], 403);
         }
-        $categoryID= $request->categoryID;
-        $courseName= $request->courseName;
-        $course =Course::create([
+        $categoryID = $request->categoryID;
+        $courseName = $request->courseName;
+        $course = Course::create([
             'name' => $courseName,
-            'category_id'=>$categoryID,
-            'lecturer_id'=> $user->id,
+            'category_id' => $categoryID,
+            'lecturer_id' => $user->id,
         ]);
         return response()->json($course, 200);
     }
@@ -53,6 +68,9 @@ class CourseController extends Controller
         $topics = $course->topics;
         $materials = array();
         foreach ($topics as $topic) {
+            // $topic->assignments;
+            // $topic->resources;
+            // array_push($materials, $topic);
             array_push($materials, $topic->assignments);
             array_push($materials, $topic->resources);
         }

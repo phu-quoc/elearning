@@ -18,7 +18,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::resource('/course', CourseController::class);
+Route::resource('/course', CourseController::class)->only([ 'show']);;
 Route::resource('/assignment', Controllers\AssignmentController::class);
 Route::resource('/resource', Controllers\ResourceController::class);
 Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class);
@@ -35,6 +35,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/class', Controllers\ActivityClassController::class)->except(['index', 'show']);
     Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
     Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
-    Route::resource("/course", Controllers\CourseController::class)->only(['store', 'update', 'destroy']);
+    Route::resource("/course", Controllers\CourseController::class)->only(['index','store', 'update', 'destroy']);
     Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['store', 'update', 'destroy']);
 });
