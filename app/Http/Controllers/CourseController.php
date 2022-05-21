@@ -15,6 +15,18 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
+        $topics_array = array();
+        foreach ($courses as $course) {
+            array_push($topics_array, $course->topics);
+        }
+        $materials = array();
+        // dd($topics);
+        foreach ($topics_array as $topics) {
+            foreach ($topics as $topic) {
+                array_push($materials, $topic->assignments);
+                array_push($materials, $topic->resources);
+            }
+        }
         return response()->json($courses, 200);
     }
 
@@ -40,7 +52,9 @@ class CourseController extends Controller
         $course = Course::find($id);
         $topics = $course->topics;
         $materials = array();
+        dd($topics);
         foreach ($topics as $topic) {
+            dd($topic);
             array_push($materials, $topic->assignments);
             array_push($materials, $topic->resources);
         }
