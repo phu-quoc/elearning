@@ -15,7 +15,6 @@ class TopicController extends Controller
     {
         $topics= Topic::all();
         return response()->json($topics, 200);
-
     }
 
     /**
@@ -26,8 +25,8 @@ class TopicController extends Controller
         try {
             DB::beginTransaction();
             $name = $request->input('name');
-            $course_id= $request->input('course_id');
-            $topic =Topic::create([
+            $course_id = $request->input('course_id');
+            $topic = Topic::create([
                 'name' => $name,
                 'course_id' => $course_id,
             ]);

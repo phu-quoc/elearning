@@ -27,7 +27,7 @@ Route::resource('/class', Controllers\ActivityClassController::class)->only(['in
 Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
 Route::resource("/category", Controllers\CategoryController::class)->only(['index', 'show']);
-Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['index', 'show']);
+Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
@@ -36,5 +36,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
     Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
     Route::resource("/course", Controllers\CourseController::class)->only(['index','store', 'update', 'destroy']);
-    Route::resource("/topic", Controllers\TopicContro1ller::class)->only(['store', 'update', 'destroy']);
+    Route::resource("/topic", Controllers\TopicController::class)->only(['store', 'update', 'destroy']);
+    Route::get('/get-course-of-user', [Controllers\CourseController::class, 'getCourseOfUser']);
 });

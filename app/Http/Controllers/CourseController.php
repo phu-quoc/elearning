@@ -15,23 +15,21 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user();
-        $userID = $user->id;
-        $userType = $user->user_type;
-        if ($userType == 2) {
-            $courses = Course::where('lecturer_id', $userID)->get();
-            return response()->json($courses, 200);
-        } else {
-            $student = $user->student;
-            $enrollments = $student->enrollments;
-            $courses = array();
-            foreach ($enrollments as $enrollment) {
-                array_push($courses, $enrollment->course);
-            }
-            return response()->json($courses, 200);
+
+        $courses = Course::all();
+        $topics_array = array();
+        foreach ($courses as $course) {
+            array_push($topics_array, $course->topics);
         }
-        // $courses = Course::all();
-        // return response()->json($courses, 200);
+        $materials = array();
+        // dd($topics);
+        foreach ($topics_array as $topics) {
+            foreach ($topics as $topic) {
+                array_push($materials, $topic->assignments);
+                array_push($materials, $topic->resources);
+            }
+        }
+        return response()->json($courses, 200);
     }
 
     /**
@@ -68,9 +66,6 @@ class CourseController extends Controller
         $topics = $course->topics;
         $materials = array();
         foreach ($topics as $topic) {
-            // $topic->assignments;
-            // $topic->resources;
-            // array_push($materials, $topic);
             array_push($materials, $topic->assignments);
             array_push($materials, $topic->resources);
         }
@@ -98,5 +93,24 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         //
+    }
+
+    public function getCourseOfUser(Request $request)
+    {
+        $user = $request->user();
+        $userID = $user->id;
+        $userType = $user->user_type;
+        if ($userType == 2) {
+            $courses = Course::where('lecturer_id', $userID)->get();
+            return response()->json($courses, 200);
+        } else {
+            $student = $user->student;
+            $enrollments = $student->enrollments;
+            $courses = array();
+            foreach ($enrollments as $enrollment) {
+                array_push($courses, $enrollment->course);
+            }
+            return response()->json($courses, 200);
+        }
     }
 }
