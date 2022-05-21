@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Resource extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'id',
         'topic_id',
@@ -32,7 +32,12 @@ class Resource extends Model
         return $this->hasOne(File::class, 'id');
     }
 
-    function folderFileAttack()
+    function assignment()
+    {
+        return $this->hasOne(Assignment::class, 'id');
+    }
+
+    function folderFileAttacks()
     {
         return $this->hasMany(FolderFileAttack::class);
     }

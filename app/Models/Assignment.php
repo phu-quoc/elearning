@@ -11,16 +11,13 @@ class Assignment extends Model
 
     protected $fillable = [
         'id',
-        'topic_id',
-        'title',
-        'description',
         'start_date',
         'deadline',
     ];
 
-    function topic()
+    function resource()
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(Resource::class, 'id');
     }
 
     function assignmentFileAttacks()
