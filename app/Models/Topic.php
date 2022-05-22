@@ -20,11 +20,6 @@ class Topic extends Model
         return $this->hasMany(Resource::class);
     }
 
-    function assignments()
-    {
-        return $this->hasMany(Assignment::class);
-    }
-
     function course()
     {
         return $this->belongsTo(Course::class);

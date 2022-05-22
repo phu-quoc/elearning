@@ -21,10 +21,8 @@ class CourseController extends Controller
             array_push($topics_array, $course->topics);
         }
         $materials = array();
-        // dd($topics);
         foreach ($topics_array as $topics) {
             foreach ($topics as $topic) {
-                array_push($materials, $topic->assignments);
                 array_push($materials, $topic->resources);
             }
         }
@@ -65,7 +63,6 @@ class CourseController extends Controller
         $topics = $course->topics;
         $materials = array();
         foreach ($topics as $topic) {
-            array_push($materials, $topic->assignments);
             array_push($materials, $topic->resources);
         }
         return response()->json($course);
