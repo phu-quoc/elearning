@@ -13,7 +13,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics= Topic::all();
+        $topics = Topic::all();
         return response()->json($topics, 200);
     }
 
@@ -24,13 +24,16 @@ class TopicController extends Controller
     {
         try {
             DB::beginTransaction();
+            $user = $request->user();
+            if ($user->user_type == 1) {
+                return response(['message' => 'Forbidden'], 403);
+            }
             $name = $request->input('name');
             $course_id = $request->input('course_id');
             $topic = Topic::create([
                 'name' => $name,
                 'course_id' => $course_id,
             ]);
-
             DB::commit();
             return $topic;
         } catch (\Exception $exception) {
