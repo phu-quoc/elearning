@@ -25,7 +25,6 @@ class AuthController extends Controller
         $tokenResult = $user->createToken('authToken')->plainTextToken;
         $userController = new UserController();
         $user = $userController->getRelation($user);
-        
         return response()->json(['user' => $user, "token" => $tokenResult]);
     }
 
@@ -43,7 +42,9 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return $request->user();
+        $userController = new UserController();
+        $user = $userController->getRelation(auth()->user());
+        return response()->json($user);
     }
 
     public function logout()
