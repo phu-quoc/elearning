@@ -15,16 +15,6 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        $topics_array = array();
-        foreach ($courses as $course) {
-            array_push($topics_array, $course->topics);
-        }
-        $materials = array();
-        foreach ($topics_array as $topics) {
-            foreach ($topics as $topic) {
-                array_push($materials, $topic->resources);
-            }
-        }
         return response()->json($courses, 200);
     }
 
