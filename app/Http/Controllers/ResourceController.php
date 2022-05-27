@@ -46,6 +46,10 @@ class ResourceController extends Controller
                 ]);
             }
             DB::commit();
+            return response()->json([
+                // 'data' => $resource->url,
+                'message' => 'Tạo tài liệu thành công'
+            ], 200);
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json([
