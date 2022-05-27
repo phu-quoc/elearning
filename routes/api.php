@@ -28,11 +28,13 @@ Route::resource("/department", Controllers\DepartmentController::class)->only(['
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
 Route::resource("/category", Controllers\CategoryController::class)->only(['index', 'show']);
 Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
-Route::get("get-topics-by-course", [Controllers\TopicController::class, 'getTopicsByCourse']);
+// Route::get('/get-topics-by-course', [Controllers\TopicController::class, 'getTopicsByCourse']);
+
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
+    Route::get('/get-topics-by-course', [Controllers\TopicController::class, 'getTopicsByCourse']);
     Route::resource('/class', Controllers\ActivityClassController::class)->except(['index', 'show']);
     Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
     Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
@@ -40,6 +42,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource("/topic", Controllers\TopicController::class)->only(['store', 'update', 'destroy']);
     Route::resource('/assignment', Controllers\AssignmentController::class)->only(['store', 'update', 'destroy']);
     Route::resource('/resource', Controllers\ResourceController::class)->only(['store', 'update', 'destroy']);
-    Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['show','store', 'update', 'destroy']);
+    Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['show', 'store', 'update', 'destroy']);
     Route::get('/get-course-of-user', [Controllers\CourseController::class, 'getCourseOfUser']);
 });

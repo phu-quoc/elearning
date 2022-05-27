@@ -66,8 +66,13 @@ class TopicController extends Controller
     }
 
     public function getTopicsByCourse(Request $request){
-        $courseID= $request->input('courseID');
-        $topics = Topic::where('course_id', $courseID)->get();
+        $course_id= $request->input('courseId');
+        $topics = Topic::where('course_id', $course_id)->get();
+        $resources = [];
+        foreach ($topics as $topic)
+        {
+            array_push($resources, $topic->resources);
+        }
         return response()->json($topics, 200);
     }
 }
