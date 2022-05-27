@@ -27,7 +27,7 @@ Route::get('/', function () {
 Route::post('test-save-file', function(Request $request) {
     $file = $request->file;
     $path= FileController::saveFile($file);
-    dd($path);
+    return $path;
 });
 Route::get('/test', function(){
     $user=User::find(5);

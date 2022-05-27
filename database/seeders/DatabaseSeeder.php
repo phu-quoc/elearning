@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(DegreeSeeder::class);
+<<<<<<< HEAD
+        $this->call(CategorySeeder::class);
+=======
         $this->call(SchoolYearSeeder::class);
         $this->call(ActivityClassSeeder::class);
         $this->call(LecturerSeeder::class);
@@ -27,5 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AssignmentSeeder::class);
         $this->call(EnrollmentSeeder::class);
         $this->call(ResourceSeeder::class);
+>>>>>>> 7a59d1eab0c2ebdf1a33869e87430337c498adba
     }
 }

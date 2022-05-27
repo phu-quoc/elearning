@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AssignmentController extends Controller
 {
@@ -21,16 +23,30 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
-        $assignment_data=[
-            'topic_id'=> $request->input('topic_id'),
-            'title'=> $request->input('title'),
-            'description'=> $request->input('description'),
-            'start_date'=> $request->input('start_date'),
-            'deadline'=> $request->input('deadline'),
-        ];
-        $assignment =Assignment::create($assignment_data);
-        $fileAttack = new AssignmentFileAttackController();
-        $fileAttack->store($request, $assignment->id);
+        try {
+            DB::beginTransaction();
+            $files = $request->file('files');
+            $resource= Resource::create([
+                'topic_id'=> $request->topicID,
+                'title'=>$request->title,
+                'description'=>$request->description,
+                'resource_type'=> 4,
+            ]);
+            $assignment = Assignment::create([
+                'id'=> $resource->id,
+                'start_date'=> Carbon::now(),
+                'deadline'=> json_decode($request->deadline),
+            ]);
+            $fileAttack = new AssignmentFileAttackController();
+            foreach($files as $file){
+                $fileAttack->store($file, $assignment->id);
+            }
+            DB::commit();
+            // return compact(['assignment', 'file' ]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $exception->getMessage();
+        }
     }
 
     /**
@@ -38,8 +54,12 @@ class AssignmentController extends Controller
      */
     public function show($id)
     {
-        $assignment = Assignment::find($id);
-        return $assignment;
+        $resource = Resource::find($id);
+        $assignment = $resource->assignment;
+        if($assignment){
+            $assignment->assignmentFileAttacks; 
+        }
+        return $resource;
     }
 
     /**

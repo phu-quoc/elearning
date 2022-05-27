@@ -27,9 +27,9 @@ class Resource extends Model
         return $this->hasOne(Url::class, 'id');
     }
 
-    function file()
+    function files()
     {
-        return $this->hasOne(File::class, 'id');
+        return $this->hasMany(File::class);
     }
 
     function assignment()

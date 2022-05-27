@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resource;
+use App\Models\Url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ResourceController extends Controller
 {
@@ -20,28 +22,31 @@ class ResourceController extends Controller
      */
     public function store(Request $request)
     {
-        $resource_type = $request->input('resource_type');
-        $resource_data= [
-            'topic_id'=> $request->input('topic_id'),
-            'title'=> $request->input('title'),
-            'description'=> $request->input('description'),
-            'resource_type'=> $resource_type,
-        ];
-        $resource= Resource::create($resource_data);
-        $url=null;
-        $file= null;
-        if($resource_type == '1'){ //type is url
-            $urlController = new UrlController();
-            $url =$urlController->store($request);
-        }else{ //type is file
+        try {
+            DB::beginTransaction();
+            $files = $request->file('files');
+            $resource= Resource::create([
+                'topic_id'=> $request->topicID,
+                'title'=>$request->title,
+                'description'=>$request->description,
+                'resource_type'=> 1, //is documents files
+            ]);
             $fileController = new FileController();
-            $file= $fileController->store($request);
+            foreach($files as $file){
+                $fileController->store($file, $resource->id);
+            }
+            $url= $request->url;
+            if($url){
+                Url::create([
+                    'id' => $resource->id,
+                    'url' => $url,
+                ]);
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $exception->getMessage();
         }
-        return response()->json([
-            'resource'=> $resource,
-            'url'=>$url,
-            'file'=>$file,
-        ]);
     }
 
     /**
