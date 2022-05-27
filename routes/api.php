@@ -18,22 +18,29 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::resource('/course', CourseController::class);
-Route::resource('/assignment', Controllers\AssignmentController::class);
-Route::resource('/resource', Controllers\ResourceController::class);
-Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class);
+Route::resource('/course', CourseController::class)->only(['index', 'show']);;
+Route::resource('/assignment', Controllers\AssignmentController::class)->only(['index', 'show']);;
+Route::resource('/resource', Controllers\ResourceController::class)->only(['index', 'show']);
+Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['index']);
 Route::post('/login', [Controllers\AuthController::class, 'login']);
 Route::resource('/class', Controllers\ActivityClassController::class)->only(['index', 'show']);
 Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
+Route::resource("/category", Controllers\CategoryController::class)->only(['index', 'show']);
 Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
 
-// Route
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [Controllers\AuthController::class, 'logout']);
-    Route::get('/user',[AuthController::class, 'user']);
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::get('/get-topics-by-course', [Controllers\TopicController::class, 'getTopicsByCourse']);
     Route::resource('/class', Controllers\ActivityClassController::class)->except(['index', 'show']);
     Route::resource("/department", Controllers\DepartmentController::class)->except(['index', 'show']);
     Route::resource("/user", Controllers\UserController::class)->only(['store', 'update', 'destroy']);
+    Route::resource("/course", Controllers\CourseController::class)->only(['store', 'update', 'destroy']);
+    Route::resource("/topic", Controllers\TopicController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('/assignment', Controllers\AssignmentController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('/resource', Controllers\ResourceController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['show', 'store', 'update', 'destroy']);
+    Route::get('/get-course-of-user', [Controllers\CourseController::class, 'getCourseOfUser']);
 });
