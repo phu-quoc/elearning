@@ -40,7 +40,7 @@ class ResourceController extends Controller
                 Url::create([
                     'id' => $resource->id,
                     'url' => $url,
-                ]);
+                ]); 
             }
             DB::commit();
         } catch (\Exception $exception) {
