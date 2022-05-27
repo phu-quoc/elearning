@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -55,10 +56,10 @@ class CourseController extends Controller
         foreach ($topics as $topic) {
             $resource = $topic->resources;
             foreach ($resource as $resource) {
-                if ($resource->resource_type == '1'){ //resouce is document
+                if ($resource->resource_type == '1') { //resouce is document
                     $resource->files;
-                }   
-                    $resource->url;
+                }
+                $resource->url;
             }
             // array_push($materials, $topic->resources);
         }
@@ -99,14 +100,14 @@ class CourseController extends Controller
         } else {
             $student = $user->student;
             $courses = array();
-            if($student->enrollments)
-            {
+            try {
                 $enrollments = $student->enrollments;
                 foreach ($enrollments as $enrollment) {
                     array_push($courses, $enrollment->course);
                 }
+            } catch (\Throwable $th) {
+                return response()->json($courses, 200);
             }
-            
             return response()->json($courses, 200);
         }
     }
