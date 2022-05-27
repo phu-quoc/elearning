@@ -65,13 +65,22 @@ class TopicController extends Controller
         //
     }
 
-    public function getTopicsByCourse(Request $request){
-        $course_id= $request->input('courseId');
+    public function getTopicsByCourse(Request $request)
+    {
+        $course_id = $request->input('courseId');
         $topics = Topic::where('course_id', $course_id)->get();
-        $resources = [];
-        foreach ($topics as $topic)
-        {
-            array_push($resources, $topic->resources);
+
+        foreach ($topics as $topic) {
+            $resources = $topic->resources;
+            foreach ($resources as $resource) {
+                if ($resource->resource_type == 1) { //resouce is document
+                    $resource->url;
+                }
+                if ($resource->resource_type != 4) {
+                    $resource->files;
+                }
+            }
+            // array_push($materials, $topic->resources);
         }
         return response()->json($topics, 200);
     }
