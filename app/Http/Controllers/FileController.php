@@ -20,14 +20,14 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($file, $resouceID)
     {
-        $file = $request->file;
-        $file_data=[
-            'name'=> $file->getClientOriginalName(),
-            'file_attack_path'=> FileController::saveFile($file),
+        $file_data = [
+            'resource_id' => $resouceID,
+            'name' => $file->getClientOriginalName(),
+            'file_attack_path' => FileController::saveFile($file),
         ];
-        $file= File::create($file_data);
+        $file = File::create($file_data);
         return $file;
     }
 
@@ -56,22 +56,24 @@ class FileController extends Controller
     }
 
     //Save file to Google Drive and return its link
-    public static function saveFile($file){
-        try{
-            $fileName= FileController::getFileName($file);
+    public static function saveFile($file)
+    {
+        try {
+            $fileName = FileController::getFileName($file);
             $googleDriveStorage = Storage::disk('google');
             $googleDriveStorage->put($fileName, file_get_contents($file->getRealPath()));
             $url = Storage::disk('google')->url($fileName);
             return $url;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             error_log($e->getMessage());
         }
     }
 
-    public static function getFileName($file){
+    public static function getFileName($file)
+    {
         $uuid = Str::uuid()->toString();
-        $fileName= $file->getClientOriginalName();
-        $fileName = $uuid."-".$fileName;
+        $fileName = $file->getClientOriginalName();
+        $fileName = $uuid . "-" . $fileName;
         return $fileName;
     }
 }

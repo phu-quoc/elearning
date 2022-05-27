@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
@@ -12,7 +13,7 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $courses = Course::all();
         return response()->json($courses, 200);
@@ -26,7 +27,18 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        if ($user->user_type == 1) { //student can't create new course
+            return response(['message' => 'Forbidden'], 403);
+        }
+        $categoryID = $request->categoryID;
+        $courseName = $request->courseName;
+        $course = Course::create([
+            'name' => $courseName,
+            'category_id' => $categoryID,
+            'lecturer_id' => $user->id,
+        ]);
+        return response()->json($course, 200);
     }
 
     /**
@@ -37,12 +49,18 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = Course::find($id)->first();
+        $course = Course::find($id);
         $topics = $course->topics;
-        $materials = array();
+        // $materials = array();
         foreach ($topics as $topic) {
-            array_push($materials, $topic->assignments);
-            array_push($materials, $topic->resources);
+            $resource = $topic->resources;
+            foreach ($resource as $resource) {
+                if ($resource->resource_type == '1'){ //resouce is document
+                    $resource->files;
+                }   
+                    $resource->url;
+            }
+            // array_push($materials, $topic->resources);
         }
         return response()->json($course);
     }
@@ -68,5 +86,24 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         //
+    }
+
+    public function getCourseOfUser(Request $request)
+    {
+        $user = $request->user();
+        $userID = $user->id;
+        $userType = $user->user_type;
+        if ($userType == 2) {
+            $courses = Course::where('lecturer_id', $userID)->get();
+            return response()->json($courses, 200);
+        } else {
+            $student = $user->student;
+            $enrollments = $student->enrollments;
+            $courses = array();
+            foreach ($enrollments as $enrollment) {
+                array_push($courses, $enrollment->course);
+            }
+            return response()->json($courses, 200);
+        }
     }
 }

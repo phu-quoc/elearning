@@ -13,6 +13,7 @@ class File extends Model
         'id',
         'name',
         'file_attack_path',
+        'resource_id'
     ];
 
     function resource()

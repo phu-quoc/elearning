@@ -14,7 +14,7 @@ class ActivityClass extends Model
         'name',
         'department_id',
     ];
-    protected $table = 'classes';
+    protected $table = 'activity_classes';
     
     function department()
     {

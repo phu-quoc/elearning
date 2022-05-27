@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Resource;
 use App\Models\Topic;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,11 +18,14 @@ class AssignmentSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 10; $i++) {
-            Topic::find($i)->assignments()->create([
-                'title' => 'Bài tập tuần ' . $i,
-                'description' => 'Các em làm hết bài tập và nộp đúng hạn. Trễ một phút trừ 0.1 điểm',
-                'start_date' => Carbon::tomorrow()->addDays(7*$i),
-                'deadline' => Carbon::tomorrow()->addDays(7+7*$i)
+            Resource::create([
+                'topic_id' => $i,
+                'title' => 'Assignment '.$i,
+                'description' => 'Bài cơ bản',
+                'resource_type' => 4
+            ])->assignment()->create([
+                'start_date' => Carbon::tomorrow(),
+                'deadline' => Carbon::tomorrow()->addDays(7)
             ]);
         }
     }

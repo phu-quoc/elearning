@@ -13,7 +13,8 @@ class TopicController extends Controller
      */
     public function index()
     {
-        return Topic::all();
+        $topics = Topic::all();
+        return response()->json($topics, 200);
     }
 
     /**
@@ -23,13 +24,16 @@ class TopicController extends Controller
     {
         try {
             DB::beginTransaction();
+            $user = $request->user();
+            if ($user->user_type == 1) {
+                return response(['message' => 'Forbidden'], 403);
+            }
             $name = $request->input('name');
-            $course_id= $request->input('course_id');
-            $topic =Topic::create([
+            $course_id = $request->input('course_id');
+            $topic = Topic::create([
                 'name' => $name,
                 'course_id' => $course_id,
             ]);
-
             DB::commit();
             return $topic;
         } catch (\Exception $exception) {
@@ -59,5 +63,16 @@ class TopicController extends Controller
     public function destroy(Topic $topic)
     {
         //
+    }
+
+    public function getTopicsByCourse(Request $request){
+        $course_id= $request->input('courseId');
+        $topics = Topic::where('course_id', $course_id)->get();
+        $resources = [];
+        foreach ($topics as $topic)
+        {
+            array_push($resources, $topic->resources);
+        }
+        return response()->json($topics, 200);
     }
 }

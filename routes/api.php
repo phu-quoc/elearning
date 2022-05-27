@@ -28,6 +28,7 @@ Route::resource("/department", Controllers\DepartmentController::class)->only(['
 Route::resource("/degree", Controllers\DegreeController::class)->only(['index', 'show']);
 Route::resource("/category", Controllers\CategoryController::class)->only(['index', 'show']);
 Route::resource("/topic", Controllers\TopicController::class)->only(['index', 'show']);
+// Route::get('/get-topics-by-course', [Controllers\TopicController::class, 'getTopicsByCourse']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
