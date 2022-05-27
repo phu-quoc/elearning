@@ -98,11 +98,15 @@ class CourseController extends Controller
             return response()->json($courses, 200);
         } else {
             $student = $user->student;
-            $enrollments = $student->enrollments;
             $courses = array();
-            foreach ($enrollments as $enrollment) {
-                array_push($courses, $enrollment->course);
+            if($student->enrollments)
+            {
+                $enrollments = $student->enrollments;
+                foreach ($enrollments as $enrollment) {
+                    array_push($courses, $enrollment->course);
+                }
             }
+            
             return response()->json($courses, 200);
         }
     }
