@@ -73,7 +73,7 @@ class TopicController extends Controller
         foreach ($topics as $topic) {
             $resources = $topic->resources;
             foreach ($resources as $resource) {
-                if ($resource->resource_type == 1) { //resouce is document
+                if ($resource->resource_type == 1) { //resource is document
                     $resource->url;
                 }
                 if ($resource->resource_type != 4) {

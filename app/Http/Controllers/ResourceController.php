@@ -24,19 +24,22 @@ class ResourceController extends Controller
     {
         try {
             DB::beginTransaction();
-            $files = $request->file('files');
-            $resource= Resource::create([
-                'topic_id'=> $request->topicID,
-                'title'=>$request->title,
-                'description'=>$request->description,
-                'resource_type'=> 1, //is documents files
+            $resource = Resource::create([
+                'topic_id' => $request->topicID,
+                'title' => $request->title,
+                'description' => $request->description,
+                'resource_type' => 1, //is url
             ]);
-            $fileController = new FileController();
-            foreach($files as $file){
-                $fileController->store($file, $resource->id);
+            if ($request->file('files')) {
+                $files = $request->file('files');
+                $fileController = new FileController();
+                foreach ($files as $file) {
+                    $fileController->store($file, $resource->id);
+                }
             }
-            $url= $request->url;
-            if($url){
+
+            $url = $request->url;
+            if ($url) {
                 Url::create([
                     'id' => $resource->id,
                     'url' => $url,
@@ -45,7 +48,9 @@ class ResourceController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return $exception->getMessage();
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 400);
         }
     }
 
