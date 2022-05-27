@@ -13,7 +13,7 @@ class AssignmentSubmissionController extends Controller
      */
     public function index()
     {
-        //
+        return 'index';
     }
 
     /**
@@ -28,15 +28,15 @@ class AssignmentSubmissionController extends Controller
             if ($user->user_type == 2) {
                 return response(['message' => 'Forbidden'], 403);
             }
-
+            $assignmentID = $request->input('assignment_id');
             $submission_data = [
-                'assignment_id' => $request->input('assignmentID'),
+                'assignment_id' =>  $assignmentID,
                 'student_id' => $user->id,
-                'status' => '0',
+                'status' => '1',
             ];
             $assignment_submission =  AssignmentSubmission::create($submission_data);
             $submission_attack_controller = new AssignmentSubmissionFileAttackController();
-            foreach($files as $file){
+            foreach ($files as $file) {
                 $submisson_attack = $submission_attack_controller->store($file, $assignment_submission->id);
             }
             DB::commit();
@@ -44,27 +44,20 @@ class AssignmentSubmissionController extends Controller
             DB::rollBack();
             return $exception->getMessage();
         }
-
-        // $submission_data = [
-        //     'assignment_id' => $request->input('assignment_id'),
-        //     'student_id' => $request->input('student_id'),
-        //     'status' => '0',
-        // ];
-        // $assignment_submission =  AssignmentSubmission::create($submission_data);
-        // $submission_attack_controller = new AssignmentSubmissionFileAttackController();
-        // $submisson_attack = $submission_attack_controller->store($files, $assignment_submission->id);
-        // return response()->json([
-        //     'assignment_submission' => $assignment_submission,
-        //     'submission_attack' => $submisson_attack,
-        // ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AssignmentSubmission $assignmentSubmission)
+    public function show(Request $request)
     {
-        //
+        $assignmentID = $request->input('assignment_id');
+        $user = $request->user();
+        $submission = AssignmentSubmission::where(['student_id' => $user->id, 'assignment_id' => $assignmentID])->first();
+        if ($submission) {
+            $submission->assignmentSubmissionFileAttacks;
+        }
+        return $submission;
     }
 
     /**

@@ -21,7 +21,7 @@ use App\Http\Controllers\AuthController;
 Route::resource('/course', CourseController::class)->only(['index', 'show']);;
 Route::resource('/assignment', Controllers\AssignmentController::class)->only(['index', 'show']);;
 Route::resource('/resource', Controllers\ResourceController::class)->only(['index', 'show']);
-Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['index', 'show']);
+Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['index']);
 Route::post('/login', [Controllers\AuthController::class, 'login']);
 Route::resource('/class', Controllers\ActivityClassController::class)->only(['index', 'show']);
 Route::resource("/department", Controllers\DepartmentController::class)->only(['index', 'show']);
@@ -40,6 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource("/topic", Controllers\TopicController::class)->only(['store', 'update', 'destroy']);
     Route::resource('/assignment', Controllers\AssignmentController::class)->only(['store', 'update', 'destroy']);
     Route::resource('/resource', Controllers\ResourceController::class)->only(['store', 'update', 'destroy']);
-    Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['show','store', 'update', 'destroy']);
     Route::get('/get-course-of-user', [Controllers\CourseController::class, 'getCourseOfUser']);
 });

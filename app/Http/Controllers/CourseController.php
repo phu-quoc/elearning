@@ -61,9 +61,16 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         $topics = $course->topics;
-        $materials = array();
+        // $materials = array();
         foreach ($topics as $topic) {
-            array_push($materials, $topic->resources);
+            $resource = $topic->resources;
+            foreach ($resource as $resource) {
+                if ($resource->resource_type == '1'){ //resouce is document
+                    $resource->files;
+                }   
+                    $resource->url;
+            }
+            // array_push($materials, $topic->resources);
         }
         return response()->json($course);
     }

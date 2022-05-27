@@ -56,7 +56,9 @@ class AssignmentController extends Controller
     {
         $resource = Resource::find($id);
         $assignment = $resource->assignment;
-        $assignment->assignmentFileAttacks;
+        if($assignment){
+            $assignment->assignmentFileAttacks; 
+        }
         return $resource;
     }
 
