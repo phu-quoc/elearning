@@ -28,7 +28,7 @@ class AssignmentSubmissionController extends Controller
             if ($user->user_type == 2) {
                 return response(['message' => 'Forbidden'], 403);
             }
-            $assignmentID = $request->input('assignment_id');
+            $assignmentID = $request->input('assignmentID');
             $submission_data = [
                 'assignment_id' =>  $assignmentID,
                 'student_id' => $user->id,
