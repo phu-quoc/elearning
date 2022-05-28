@@ -45,7 +45,9 @@ class AssignmentSubmissionController extends Controller
             ], 200);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return $exception->getMessage();
+            return response()->json([
+                'message' => 'Nộp bài tập thất bại'
+            ], 400);;
         }
     }
 
