@@ -43,4 +43,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/resource', Controllers\ResourceController::class)->only(['store', 'update', 'destroy']);
     Route::resource('/assignment-submission', Controllers\AssignmentSubmissionController::class)->only(['show', 'store', 'update', 'destroy']);
     Route::get('/get-course-of-user', [Controllers\CourseController::class, 'getCourseOfUser']);
+    Route::get('/get-un-submit-assignments-of-user', [Controllers\UserController::class, 'getUnSubmitAssignmentsOfUser']);
 });
