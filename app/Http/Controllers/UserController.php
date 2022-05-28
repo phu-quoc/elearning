@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Enrollment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -107,5 +109,24 @@ class UserController extends Controller
             }
         }
         return $user;
+    }
+
+    public function getUnSubmitAssignmentsOfUser(Request $request){
+        $user = $request->user();
+        // if($user->user_type == 2){
+            //     return response(['message' => 'Forbidden'], 403);
+            // }
+            $student_id= $user->id;
+        $result =DB::select('SELECT s.id as student_id, r.* FROM students s 
+        INNER JOIN enrollments e ON s.id = e.student_id
+        INNER JOIN courses c ON e.course_id = c.id 
+        INNER JOIN topics t ON t.course_id = c.id 
+        INNER JOIN resources r ON r.topic_id = t.id 
+        where not EXISTS (
+            SELECT asm.assignment_id from assignment_submissions  asm
+            WHERE asm.assignment_id = r.id 
+        )AND r.resource_type = 4 AND s.id = ?', [$student_id]);
+        return $result;
+
     }
 }
