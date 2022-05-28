@@ -40,6 +40,9 @@ class AssignmentSubmissionController extends Controller
                 $submisson_attack = $submission_attack_controller->store($file, $assignment_submission->id);
             }
             DB::commit();
+            return response()->json([
+                'message' => 'Đã nộp bài tập'
+            ], 200);
         } catch (\Exception $exception) {
             DB::rollBack();
             return $exception->getMessage();
