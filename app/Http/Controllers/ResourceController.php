@@ -43,7 +43,7 @@ class ResourceController extends Controller
                 Url::create([
                     'id' => $resource->id,
                     'url' => $url,
-                ]);
+                ]); 
             }
             DB::commit();
             return response()->json([
