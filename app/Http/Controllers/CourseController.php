@@ -58,7 +58,7 @@ class CourseController extends Controller
                 if ($resource->resource_type == '1'){ //resouce is document
                     $resource->files;
                 }   
-                    $resource->url;
+                $resource->url;
             }
             // array_push($materials, $topic->resources);
         }

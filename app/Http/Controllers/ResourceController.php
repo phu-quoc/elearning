@@ -35,13 +35,13 @@ class ResourceController extends Controller
             foreach($files as $file){
                 $fileController->store($file, $resource->id);
             }
-            $url= $request->url;
-            if($url){
-                Url::create([
-                    'id' => $resource->id,
-                    'url' => $url,
-                ]); 
-            }
+            // $url= $request->url;
+            // if($url){
+            //     Url::create([
+            //         'id' => $resource->id,
+            //         'url' => $url,
+            //     ]); 
+            // }
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();

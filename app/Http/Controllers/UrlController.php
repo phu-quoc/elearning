@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
+use App\Models\Resource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UrlController extends Controller
 {
@@ -12,7 +14,7 @@ class UrlController extends Controller
      */
     public function index()
     {
-        //
+        return URL::all();
     }
 
     /**
@@ -20,10 +22,28 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        $url=Url::create([
-            'url'=> $request->input('url'),
-        ]);
-        return $url;
+        try {
+            DB::beginTransaction();
+            $resource= Resource::create([
+                'topic_id'=> $request->topicID,
+                'title'=>$request->title,
+                'description'=>$request->description,
+                'resource_type'=> 2, //is url
+            ]);
+           
+            $url= $request->url;
+            if($url){
+                $url= Url::create([
+                    'id' => $resource->id,
+                    'url' => $url,
+                ]); 
+            }
+            DB::commit();
+            return response()->json(['resource'=> $resource,'url' => $url]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $exception->getMessage();
+        }
     }
 
     /**
