@@ -75,7 +75,7 @@ class TopicController extends Controller
                 if ($resource->resource_type == 2) { //resource is url
                     $resource->url;
                 }
-                if ($resource->resource_type != 4) {
+                if ($resource->resource_type != 4) { // 4 is assignment
                     $resource->files;
                 }
             }
