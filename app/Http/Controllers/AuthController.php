@@ -6,12 +6,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\Environment\Console;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $data = $request->data;
+        try {
+            $data = $request->data;
         $googleToken = $data['googleToken'];
         $deviceToken = $data['fcmToken'];
         $res = Http::get('https://oauth2.googleapis.com/tokeninfo?id_token=' . $googleToken);
@@ -33,6 +35,10 @@ class AuthController extends Controller
         $userController = new UserController();
         $user = $userController->getRelation($user);
         return response()->json(['user' => $user, "token" => $tokenResult]);
+        } catch (\Throwable $th) {
+            $th->getMessage();
+        }
+        
     }
 
     public function register(Request $request, $googleToken, $deviceToken, $res)
