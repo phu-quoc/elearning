@@ -65,8 +65,7 @@ class TopicController extends Controller
         //
     }
 
-    public function getTopicsByCourse(Request $request)
-    {
+    public function getTopicsByCourse(Request $request){
         $course_id = $request->input('courseId');
         $topics = Topic::where('course_id', $course_id)->get();
 
@@ -80,7 +79,6 @@ class TopicController extends Controller
                     $resource->files;
                 }
             }
-            // array_push($materials, $topic->resources);
         }
         return response()->json($topics, 200);
     }

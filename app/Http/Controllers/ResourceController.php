@@ -37,14 +37,13 @@ class ResourceController extends Controller
                     $fileController->store($file, $resource->id);
                 }
             }
-
-            $url = $request->url;
-            if ($url) {
-                Url::create([
-                    'id' => $resource->id,
-                    'url' => $url,
-                ]); 
-            }
+            // $url= $request->url;
+            // if($url){
+            //     Url::create([
+            //         'id' => $resource->id,
+            //         'url' => $url,
+            //     ]); 
+            // }
             DB::commit();
             return response()->json([
                 // 'data' => $resource->url,
