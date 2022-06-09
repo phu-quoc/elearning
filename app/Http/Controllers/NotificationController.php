@@ -10,7 +10,8 @@ class NotificationController extends Controller
 {
     public function sendNotification(Request $request)
     {
-        $deviceToken = 'dSJgAeQQRgSP02C39nemm1:APA91bFBRWpFNyUFmuraeBNuWnJo5DFh2Mi0TtA2L4DBLkrPHL98dJK4XwYkFqXqhbNHx1IUWNXxiA4DGRj6CrQzW0ban-Ymj7uVqpOIrdfRPN2XtMj5grNVnabpmRAzbQHy4gBZM8p2';
+        $deviceToken = array();
+        array_push($deviceToken, 'dSJgAeQQRgSP02C39nemm1:APA91bFBRWpFNyUFmuraeBNuWnJo5DFh2Mi0TtA2L4DBLkrPHL98dJK4XwYkFqXqhbNHx1IUWNXxiA4DGRj6CrQzW0ban-Ymj7uVqpOIrdfRPN2XtMj5grNVnabpmRAzbQHy4gBZM8p2');
         PushNotificationJob::dispatch('sendBatchNotification', [
             $deviceToken,
             [
