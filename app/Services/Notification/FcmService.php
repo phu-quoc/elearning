@@ -49,7 +49,7 @@ class FcmService implements NotificationService
                 ],
                 'fcm_options' => [
                     'image' => $data['image'] ?? null,
-                ], 
+                ],
             ],
         ];
 
@@ -112,7 +112,7 @@ class FcmService implements NotificationService
 
             $result = $result->getStatusCode() == Response::HTTP_OK;
         } catch (Exception $e) {
-            Log::debug($e)
+            Log::debug($e);
         }
 
         return $result;
