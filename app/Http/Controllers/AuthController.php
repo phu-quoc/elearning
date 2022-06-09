@@ -36,7 +36,7 @@ class AuthController extends Controller
         $user = $userController->getRelation($user);
         return response()->json(['user' => $user, "token" => $tokenResult]);
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response()->json(['error' => $th]);
         }
         
     }
