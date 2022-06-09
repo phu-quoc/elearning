@@ -10,7 +10,8 @@ class NotificationController extends Controller
 {
     public function sendNotification(Request $request)
     {
-        $deviceToken = DB::table('users')->where('device_token', '<>', null)->pluck('device_token')->toArray();
+        try {
+            $deviceToken = DB::table('users')->where('device_token', '<>', null)->pluck('device_token')->toArray();
         // array_push($deviceToken, 'dSJgAeQQRgSP02C39nemm1:APA91bFBRWpFNyUFmuraeBNuWnJo5DFh2Mi0TtA2L4DBLkrPHL98dJK4XwYkFqXqhbNHx1IUWNXxiA4DGRj6CrQzW0ban-Ymj7uVqpOIrdfRPN2XtMj5grNVnabpmRAzbQHy4gBZM8p2');
         PushNotificationJob::dispatch('sendBatchNotification', [
             $deviceToken,
@@ -24,5 +25,11 @@ class NotificationController extends Controller
         return response()->json([
             'message' => 'Successfully'
         ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error: '+$th
+            ], 400);
+        }
+        
     }
 }
