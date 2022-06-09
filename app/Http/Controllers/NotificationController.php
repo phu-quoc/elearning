@@ -32,7 +32,7 @@ class NotificationController extends Controller
                 [
                     'topicName' => 'new_resource',
                     'title' => $title,
-                    'body' => 'Xin chào, bạn có một '. $title . 'ở lớp học phần '.$request->course_name,
+                    'body' => 'Xin chào, bạn có một '. $title . ' ở lớp học phần '.$request->course_name,
                 ],
             ]);
             return response()->json([
