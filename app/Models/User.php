@@ -27,6 +27,7 @@ class User extends Authenticatable
         'google_id',
         'department_id',
         'image_feature_path',
+        'device_token'
     ];
 
     /**

@@ -60,4 +60,5 @@ class StudentController extends Controller
     {
         //
     }
+
 }
