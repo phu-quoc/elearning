@@ -12,23 +12,30 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $data = $request->data;
-        $idToken = $data['idToken'];
-        $res = Http::get('https://oauth2.googleapis.com/tokeninfo?id_token=' . $idToken);
+        $googleToken = $data['googleToken'];
+        $deviceToken = $data['fcmToken'];
+        $res = Http::get('https://oauth2.googleapis.com/tokeninfo?id_token=' . $googleToken);
         $email = $res->json()['email'];
         $user = User::where('email', $email)->first();
-        if (!$user) { //user does not exist, regiser user
+        if (!$user) { //user does not exist, register user
             error_log("0 exist");
-            $user = AuthController::register($request, $idToken, $res);
+            $user = AuthController::register($request, $googleToken, $deviceToken, $res);
         } else {
             error_log("exist");
         }
         $tokenResult = $user->createToken('authToken')->plainTextToken;
+        if($user->device_token !== $deviceToken)
+        {
+            $user->update([
+                'device_token' => $deviceToken
+            ]);
+        }
         $userController = new UserController();
         $user = $userController->getRelation($user);
         return response()->json(['user' => $user, "token" => $tokenResult]);
     }
 
-    public function register(Request $request, $idToken, $res)
+    public function register(Request $request, $googleToken, $deviceToken, $res)
     {
         return User::create([
             'name' => $res->json()['name'],
@@ -36,7 +43,8 @@ class AuthController extends Controller
             'first_name' => $res->json()['family_name'],
             'last_name' => $res->json()['given_name'],
             'image_feature_path' => $res->json()['picture'],
-            'google_id' => $idToken,
+            'google_id' => $googleToken,
+            'device_token' => $deviceToken
         ]);
     }
 
@@ -50,7 +58,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
+        $request->user()->update([
+            'device_token' => null
+        ]);
         return response()->json([
             'message' => 'Logout'
         ], 200);
