@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Notification\FcmService;
+use App\Services\Notification\NotificationService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(NotificationService::class, function(){
+            return new FcmService();
+        });
     }
 
     /**
