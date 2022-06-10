@@ -19,7 +19,7 @@ class NotificationController extends Controller
                 case 2:
                     $title = 'Liên kết mới: "' . $request->title . '"';
                     break;
-                case 1:
+                case 4:
                     $title = 'Bài tập mới: "' . $request->title . '"';
                     break;
                 default:
@@ -32,7 +32,7 @@ class NotificationController extends Controller
                 [
                     'topicName' => 'new_resource',
                     'title' => $title,
-                    'body' => 'Xin chào, bạn có một '. $title . ' ở lớp học phần '.$request->course_name,
+                    'body' => 'Xin chào, bạn có một ' . $title . ' ở lớp học phần ' . $request->course_name,
                 ],
             ]);
             return response()->json([
