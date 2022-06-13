@@ -25,18 +25,33 @@ class NotificationController extends Controller
                 default:
                     break;
             }
-            $deviceToken = DB::table('users')->where('device_token', '<>', null)->pluck('device_token')->toArray();
-            // array_push($deviceToken, 'dSJgAeQQRgSP02C39nemm1:APA91bFBRWpFNyUFmuraeBNuWnJo5DFh2Mi0TtA2L4DBLkrPHL98dJK4XwYkFqXqhbNHx1IUWNXxiA4DGRj6CrQzW0ban-Ymj7uVqpOIrdfRPN2XtMj5grNVnabpmRAzbQHy4gBZM8p2');
-            PushNotificationJob::dispatch('sendBatchNotification', [
-                $deviceToken,
-                [
-                    'topicName' => 'new_resource',
-                    'title' => $title,
-                    'body' => 'Xin chào, bạn có một ' . $title . ' ở lớp học phần ' . $request->course_name,
-                ],
-            ]);
+            $student_ids = DB::table('enrollments')->where('course_id', $request->course_id)->pluck('student_id')->toArray();
+            $deviceTokens = array();
+            foreach($student_ids as $student_id)
+            {
+                $deviceToken = DB::table('users')->where('id', $student_id)->first();
+                if($deviceToken->device_token)
+                {
+                    array_push($deviceTokens, $deviceToken->device_token);
+                }
+            }
+            
+            if($deviceTokens !== null)
+            {
+                PushNotificationJob::dispatch('sendBatchNotification', [
+                    $deviceTokens,
+                    [
+                        'topicName' => 'new_resource',
+                        'title' => $title,
+                        'body' => 'Xin chào, bạn có một ' . $title . ' ở lớp học phần ' . $request->course_name,
+                    ],
+                ]);
+            }
             return response()->json([
-                'message' => 'Successfully'
+                'message' => 'Successfully',
+                'tokens' => $deviceTokens,
+                // 'student_ids' => $student_ids,
+                // 'request' => $request
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
